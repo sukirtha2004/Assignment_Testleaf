@@ -1,13 +1,14 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
+/* ─── DATA ─────────────────────────────────────────────────── */
 const socialLinks = [
   {
     href: 'https://github.com/sukirtha2004',
     label: 'GitHub',
     icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 0.5C5.4 0.5 0 5.9 0 12.5C0 17.8 3.4 22.2 8.2 23.8C8.9 23.9 9.1 23.5 9.1 23.2C9.1 22.9 9.1 22.1 9.1 21.1C5.8 21.8 5.1 19.5 5.1 19.5C4.6 18.1 3.8 17.7 3.8 17.7C2.6 16.9 3.9 16.9 3.9 16.9C5.3 17 6.1 18.2 6.1 18.2C7.3 20.1 9.4 19.6 10.2 19.3C10.3 18.5 10.7 17.9 11.1 17.6C8 17.3 4.8 16.3 4.8 11.5C4.8 10.2 5.3 9.2 6.1 8.4C6 8.1 5.6 7 6.2 5.3C6.2 5.3 7.2 5 9.1 6.1C10 5.8 11 5.7 12 5.7C13 5.7 14 5.8 14.9 6.1C16.8 5 17.8 5.3 17.8 5.3C18.4 7 18 8.1 17.9 8.4C18.7 9.2 19.2 10.2 19.2 11.5C19.2 16.4 15 17.3 11.8 17.6C12.3 18 12.7 18.8 12.7 20.1C12.7 21.8 12.7 22.9 12.7 23.2C12.7 23.5 12.9 23.9 13.6 23.8C18.4 22.2 21.8 17.8 21.8 12.5C21.8 5.9 16.4 0.5 9.8 0.5H12Z" />
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.2 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 22.3 24 17.8 24 12.5 24 5.87 18.63.5 12 .5z" />
       </svg>
     ),
   },
@@ -15,8 +16,8 @@ const socialLinks = [
     href: 'https://www.linkedin.com/in/sukirtha-l-3b5233261/',
     label: 'LinkedIn',
     icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4.98 3.5C4.98 4.6 4.08 5.5 2.98 5.5C1.88 5.5 1 4.6 1 3.5C1 2.4 1.88 1.5 2.98 1.5C4.08 1.5 4.98 2.4 4.98 3.5ZM.5 8.75H5.5V23H.5V8.75ZM8.5 8.75H13.1V10.3H13.2C13.9 9.1 15.5 7.9 17.7 7.9C22.6 7.9 23 10.9 23 15.2V23H18V15.9C18 13.7 17.9 11 15 11C12.1 11 11.6 13.3 11.6 15.8V23H6.6V8.75H8.5Z" />
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.28 8.75H4.7V23H.28V8.75zm7.4 0h4.22v1.96h.06c.59-1.12 2.03-2.3 4.18-2.3 4.47 0 5.3 2.94 5.3 6.77V23h-4.43v-7.37c0-1.76-.03-4.02-2.45-4.02-2.45 0-2.82 1.91-2.82 3.89V23H7.68V8.75z" />
       </svg>
     ),
   },
@@ -24,26 +25,26 @@ const socialLinks = [
     href: 'https://leetcode.com/u/Sukirthaloganathan/',
     label: 'LeetCode',
     icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M22 2H2v20h20V2Zm-9.1 5.8l-1.5 1.4 3.7 3.7c-.1.1-.2.1-.2.2a1.8 1.8 0 0 1-1.8.5l-4.4-1a1.7 1.7 0 0 1-1.2-1.1l-1.1-3.6-2 .7 1.2 3.9a4 4 0 0 0 2.8 2.5l4.4 1c1.6.4 3.2-.4 3.9-1.7l3.1-3.1 1.4 1.4V7.4l-6.7 6.7-2.5-2.5 1.5-1.4L16.9 7.8h-4Z" />
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
       </svg>
     ),
   },
 ]
 
 const skillList = [
-  'Core Java',
-  'C Programming',
-  'React',
-  'HTML & CSS',
-  'SQL',
-  'DBMS',
-  'Functionize AI Testing Tool',
-  'Software Testing',
-  'GitHub',
-  'Postman',
-  'JavaScript',
-  'VS Code',
+  { name: 'Core Java', color: '#f97316' },
+  { name: 'C Programming', color: '#a855f7' },
+  { name: 'React', color: '#38bdf8' },
+  { name: 'HTML & CSS', color: '#f43f5e' },
+  { name: 'SQL', color: '#facc15' },
+  { name: 'DBMS', color: '#34d399' },
+  { name: 'Functionize AI Testing', color: '#818cf8' },
+  { name: 'Software Testing', color: '#fb923c' },
+  { name: 'GitHub', color: '#e2e8f0' },
+  { name: 'Postman', color: '#f97316' },
+  { name: 'JavaScript', color: '#fbbf24' },
+  { name: 'VS Code', color: '#60a5fa' },
 ]
 
 const projectList = [
@@ -52,44 +53,51 @@ const projectList = [
     tech: 'React · SQL · MERN Stack',
     description:
       'Developed a full-stack application to calculate Course Outcome (CO) and Program Outcome (PO) attainment based on student marks. Implemented automatic mapping of scores to learning outcomes, helping faculty analyze and track student performance efficiently.',
+    accent: '#3b82f6',
   },
   {
     title: 'Smart Candidate Skill Evaluation System',
     tech: 'MERN Stack',
     description:
       'An intelligent platform designed to evaluate candidate technical skills through automated assessments and performance analytics. The system analyzes coding ability, logical reasoning, and problem-solving skills to generate structured evaluation reports for recruiters.',
+    accent: '#8b5cf6',
   },
   {
     title: 'Organ Donation Management System',
     tech: 'MERN Stack',
     description:
       'Developed an Organ Donation Management System to manage organ donors, recipients, and hospital coordination efficiently. The system tracks organ availability and enables organ booking based on blood group and tissue compatibility, reducing manual effort and improving emergency response.',
+    accent: '#ec4899',
   },
 ]
 
 const educationList = [
   {
     title: 'Bachelor of Engineering',
-    year: '2022 – 2026',
+    year: '2022 – Present',
     score: '7.93 CGPA',
     institution: 'Bannari Amman Institute of Technology',
+    icon: '🎓',
   },
   {
     title: 'Higher Secondary School',
     year: '2022',
     score: '90.17%',
     institution: 'Sri Krishna Matric Hr. Sec School',
+    icon: '📚',
   },
   {
     title: 'Secondary School',
     year: '2020',
     score: '85.40%',
     institution: 'Sri Krishna Matric Hr. Sec School',
+    icon: '🏫',
   },
 ]
 
-function App() {
-  const sectionRefs = useRef([])
+/* ─── HOOK: scroll-flip observer ───────────────────────────── */
+function useFlipObserver() {
+  const refs = useRef([])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -100,174 +108,300 @@ function App() {
           }
         })
       },
-      { threshold: 0.3 },
+      { threshold: 0.12 },
     )
-
-    sectionRefs.current.forEach((section) => {
-      if (section) observer.observe(section)
-    })
-
+    refs.current.forEach((el) => el && observer.observe(el))
     return () => observer.disconnect()
   }, [])
 
-  const setRef = (index) => (element) => {
-    sectionRefs.current[index] = element
+  const setRef = (i) => (el) => {
+    refs.current[i] = el
+  }
+  return setRef
+}
+
+/* ─── NAVBAR ────────────────────────────────────────────────── */
+function Navbar() {
+  const [open, setOpen] = useState(false)
+
+  const links = [
+    { label: 'About Me', href: '#about' },
+    { label: 'Skills', href: '#skills' },
+    { label: 'Experience', href: '#experience' },
+    { label: 'Projects', href: '#projects' },
+    { label: 'Contact', href: '#contact' },
+  ]
+
+  const handleNav = (href) => {
+    setOpen(false)
+    const el = document.querySelector(href)
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
+    <header className="navbar">
+      <div className="brand">
+        <span className="brand-dot" />
+        Sukirtha L
+      </div>
+
+      {/* Desktop nav */}
+      <nav className="nav-links" aria-label="Main navigation">
+        {links.map((l) => (
+          <a
+            key={l.label}
+            href={l.href}
+            onClick={(e) => { e.preventDefault(); handleNav(l.href) }}
+          >
+            {l.label}
+          </a>
+        ))}
+      </nav>
+
+      {/* Hamburger */}
+      <button
+        className={`hamburger ${open ? 'open' : ''}`}
+        aria-label="Toggle menu"
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span /><span /><span />
+      </button>
+
+      {/* Mobile drawer */}
+      <nav className={`mobile-nav ${open ? 'mobile-nav--open' : ''}`} aria-label="Mobile navigation">
+        {links.map((l) => (
+          <a
+            key={l.label}
+            href={l.href}
+            onClick={(e) => { e.preventDefault(); handleNav(l.href) }}
+          >
+            {l.label}
+          </a>
+        ))}
+      </nav>
+    </header>
+  )
+}
+
+/* ─── APP ───────────────────────────────────────────────────── */
+export default function App() {
+  const setRef = useFlipObserver()
+
+  return (
     <div className="portfolio-shell">
-      <header className="navbar">
-        <div className="brand">Sukirtha L</div>
-        <nav className="nav-links">
-          <a href="#home">Home</a>
-          <a href="#about">About Me</a>
-          <a href="#skills">Skills</a>
-          <a href="#experience">Experience</a>
-          <a href="#education">Education</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
-        </nav>
-      </header>
+      <Navbar />
 
       <main className="page-content">
-        <section id="home" ref={setRef(0)} className="section home-section">
-          <div className="section-head">
-            <span className="eyebrow">Hello, I'm</span>
-            <h1>Sukirtha Loganathan</h1>
-            <p className="subtitle">
-Turning ideas into reliable software through Java, automation, and AI-powered engineering.            </p>
-          </div>
 
-          <div className="home-actions">
-            <a
-              className="primary-button"
-              href="https://drive.google.com/file/d/1AjVkBqwmTUpCLMpSQYHdGAJKs9bBBnr7/view?usp=sharing"
-              target="_blank"
-              rel="noreferrer"
-            >
-              View Resume
-            </a>
-            <div className="home-social-row">
-              {socialLinks.map((item) => (
+        {/* ── HERO / HOME ── */}
+        <section id="home" ref={setRef(0)} className="section hero-section">
+          <div className="hero-glow" aria-hidden="true" />
+          <div className="hero-body">
+            <span className="eyebrow">Hello, I'm</span>
+            <h1 className="hero-name">Sukirtha Loganathan</h1>
+            <p className="hero-role">
+              Aspiring SDE &amp; QA Engineer&nbsp;|&nbsp;Java Programmer&nbsp;·&nbsp;JS&nbsp;·&nbsp;SQL&nbsp;·&nbsp;GenAI
+              <br />
+              AI-Powered Test Automation&nbsp;|&nbsp;Fresher
+            </p>
+            <p className="hero-bio">
+              Turning ideas into reliable software through Java, automation, and AI-powered engineering.
+            </p>
+
+            <div className="hero-actions">
+              <a
+                className="btn-primary"
+                href="https://drive.google.com/file/d/1AjVkBqwmTUpCLMpSQYHdGAJKs9bBBnr7/view?usp=sharing"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View Resume
+              </a>
+              <div className="social-row">
+                {socialLinks.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="social-btn"
+                    aria-label={s.label}
+                  >
+                    {s.icon}
+                    <span>{s.label}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── ABOUT ── */}
+        <section id="about" ref={setRef(1)} className="section about-section">
+          <SectionHead eyebrow="About Me" title="Professional Introduction" />
+          <div className="about-body">
+            <p>
+              I am an aspiring Software Developer and QA Engineer with hands-on knowledge in modern web
+              development and quality automation. I enjoy building scalable, data-driven solutions in React
+              and the MERN stack while applying intelligent testing practices to deliver reliable software.
+            </p>
+            <p>
+              My focus is on creating efficient applications, mastering AI-powered test automation, and
+              delivering strong software quality through practical experience and continuous learning.
+            </p>
+            <div className="about-social">
+              {socialLinks.map((s) => (
                 <a
-                  key={item.label}
-                  href={item.href}
+                  key={s.label}
+                  href={s.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="social-button"
+                  className="about-social-btn"
+                  aria-label={s.label}
                 >
-                  {item.icon}
-                  <span>{item.label}</span>
+                  {s.icon}
+                  <span>{s.label}</span>
                 </a>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="about" ref={setRef(1)} className="section about-section">
-          <div className="section-head">
-            <span className="eyebrow">About Me</span>
-            <h2>Professional Introduction</h2>
+        {/* ── SKILLS ── */}
+        <section id="skills" ref={setRef(2)} className="section skills-section">
+          <SectionHead eyebrow="Skills" title="Technical Skillset" />
+          <div className="skills-grid">
+            {skillList.map((sk) => (
+              <div
+                key={sk.name}
+                className="skill-card"
+                style={{ '--accent': sk.color }}
+              >
+                <span className="skill-dot" style={{ background: sk.color }} />
+                {sk.name}
+              </div>
+            ))}
           </div>
-          <div className="about-grid">
-            <div className="about-copy">
-              <p>
-                I am an aspiring Software Developer and QA Engineer with hands-on knowledge in modern web
-                development and quality automation. I enjoy building scalable, data-driven solutions in React
-                and the MERN stack while applying intelligent testing practices to deliver reliable software.
-              </p>
-              <p>
-                My focus is on creating efficient applications, mastering AI-powered test automation, and
-                delivering strong software quality through practical experience and continuous learning.
-              </p>
+        </section>
+
+        {/* ── EXPERIENCE ── */}
+        <section id="experience" ref={setRef(3)} className="section experience-section">
+          <SectionHead eyebrow="Experience" title="Work & Training" />
+          <div className="exp-card">
+            <div className="exp-header">
+              <div className="exp-icon">💼</div>
+              <div>
+                <h3 className="exp-title">RW Team – Software Developer Trainee</h3>
+                <span className="exp-tag">Technical Learning Experience</span>
+              </div>
+            </div>
+            <p className="exp-desc">
+              Worked with the RW team where I gained hands-on exposure to modern development technologies
+              and backend application design. The learnings include React, Functionize AI testing tool,
+              and software testing.
+            </p>
+            <div className="exp-tech-row">
+              {['React', 'Functionize AI Testing Tool', 'Software Testing'].map((t) => (
+                <span key={t} className="exp-tech-badge">{t}</span>
+              ))}
             </div>
           </div>
         </section>
 
-        <section id="skills" ref={setRef(2)} className="section skills-section">
-          <div className="section-head">
-            <span className="eyebrow">Skills</span>
-            <h2>Technical Skillset</h2>
-          </div>
-          <div className="skills-grid">
-            {skillList.map((skill) => (
-              <div key={skill} className="skill-card">
-                {skill}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section id="experience" ref={setRef(3)} className="section experience-section">
-          <div className="section-head">
-            <span className="eyebrow">Experience</span>
-            <h2>RW Team – Software Developer Trainee</h2>
-          </div>
-          <div className="experience-copy">
-            <p>
-              Technical Learning Experience: Worked with the RW team, where I gained hands-on exposure to modern
-              development technologies and backend application design. The learnings included React, Functionize AI
-              testing tool, and software testing.
-            </p>
-          </div>
-        </section>
-
-        <section id="education" ref={setRef(4)} className="section education-section">
-          <div className="section-head">
-            <span className="eyebrow">Education</span>
-            <h2>Academic Background</h2>
-          </div>
-          <div className="education-row">
-            {educationList.map((item) => (
-              <div key={item.title} className="education-card">
-                <div className="education-title">{item.title}</div>
-                <div className="education-year">{item.year}</div>
-                <div className="education-score">{item.score}</div>
-                <div className="education-venue">{item.institution}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section id="projects" ref={setRef(5)} className="section projects-section">
-          <div className="section-head">
-            <span className="eyebrow">Projects</span>
-            <h2>Featured Work</h2>
-          </div>
+        {/* ── PROJECTS ── */}
+        <section id="projects" ref={setRef(4)} className="section projects-section">
+          <SectionHead eyebrow="Projects" title="Featured Work" />
           <div className="projects-grid">
-            {projectList.map((project) => (
-              <article key={project.title} className="project-card">
-                <h3>{project.title}</h3>
-                <p className="project-tech">Technologies: {project.tech}</p>
-                <p>{project.description}</p>
+            {projectList.map((p) => (
+              <article
+                key={p.title}
+                className="project-card"
+                style={{ '--accent': p.accent }}
+              >
+                <div className="project-accent-bar" />
+                <h3 className="project-title">{p.title}</h3>
+                <p className="project-tech">
+                  <span className="tech-label">Technologies:</span> {p.tech}
+                </p>
+                <p className="project-desc">{p.description}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <section id="contact" ref={setRef(6)} className="section contact-section">
-          <div className="section-head">
-            <span className="eyebrow">Contact</span>
-            <h2>Get in Touch</h2>
-          </div>
-          <div className="contact-grid">
-            <div className="contact-card">
-              <span>Name</span>
-              <strong>Sukirtha Loganathan</strong>
-            </div>
-            <div className="contact-card">
-              <span>Email</span>
-              <a href="mailto:sukirthalogu@gmail.com">sukirthalogu@gmail.com</a>
-            </div>
-            <div className="contact-card">
-              <span>Mobile</span>
-              <strong>+91 8508418507</strong>
-            </div>
+        {/* ── EDUCATION ── */}
+        <section id="education" ref={setRef(5)} className="section education-section">
+          <SectionHead eyebrow="Education" title="Academic Background" />
+          <div className="education-grid">
+            {educationList.map((e) => (
+              <div key={e.title} className="education-card">
+                <div className="edu-icon">{e.icon}</div>
+                <div className="edu-title">{e.title}</div>
+                <div className="edu-year">{e.year}</div>
+                <div className="edu-score">{e.score}</div>
+                <div className="edu-venue">{e.institution}</div>
+              </div>
+            ))}
           </div>
         </section>
+
+        {/* ── CONTACT ── */}
+        <section id="contact" ref={setRef(6)} className="section contact-section">
+          <SectionHead eyebrow="Contact" title="Get in Touch" />
+          <div className="contact-grid">
+            <ContactCard icon="👤" label="Name" value="Sukirtha Loganathan" />
+            <ContactCard
+              icon="✉️"
+              label="Email"
+              value={<a href="mailto:sukirthalogu@gmail.com">sukirthalogu@gmail.com</a>}
+            />
+            <ContactCard icon="📱" label="Mobile" value="+91 8508418507" />
+          </div>
+        </section>
+
       </main>
+
+      <footer className="site-footer">
+        <p>© 2025 Sukirtha Loganathan · Built with React &amp; Vite</p>
+        <div className="footer-links">
+          {socialLinks
+            .filter((link) => link.label === 'GitHub' || link.label === 'LinkedIn')
+            .map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+                className="footer-link"
+                aria-label={link.label}
+              >
+                {link.icon}
+                <span>{link.label}</span>
+              </a>
+            ))}
+        </div>
+      </footer>
     </div>
   )
 }
 
-export default App
+/* ─── SMALL COMPONENTS ──────────────────────────────────────── */
+function SectionHead({ eyebrow, title }) {
+  return (
+    <div className="section-head">
+      <span className="eyebrow">{eyebrow}</span>
+      <h2>{title}</h2>
+      <div className="section-divider" />
+    </div>
+  )
+}
+
+function ContactCard({ icon, label, value }) {
+  return (
+    <div className="contact-card">
+      <span className="contact-icon">{icon}</span>
+      <span className="contact-label">{label}</span>
+      <div className="contact-value">{value}</div>
+    </div>
+  )
+}
