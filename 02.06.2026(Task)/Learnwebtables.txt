@@ -1,0 +1,33 @@
+```python
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+class LearnWebtables:
+    @staticmethod
+    def main():
+        driver = webdriver.Chrome()
+        driver.get("https://leafground.com/table.xhtml")
+        driver.maximize_window()
+        driver.implicitly_wait(15)
+
+        numberOfTrTage = driver.find_elements(By.XPATH, "//div[@class='ui-datatable-scrollable-body']/table/tbody/tr")
+        rowCount = len(numberOfTrTage)
+        print("The Row count is: " + str(rowCount))
+
+        numberOfTdTags = driver.find_elements(By.XPATH, "//div[@class='ui-datatable-scrollable-body']/table/tbody/tr[1]/td")
+        columnCount = len(numberOfTdTags)
+        print("columnCount is: " + str(columnCount))
+
+        row2Data = driver.find_elements(By.XPATH, "//div[@class='ui-datatable-scrollable-body']/table/tbody/tr[2]/td")
+        for i in range(len(row2Data)):
+            row2StringValue = row2Data[i].text
+            print("row2StringValue is : " + row2StringValue)
+
+        allData = driver.find_elements(By.XPATH, "//div[@class='ui-datatable-scrollable-body']/table/tbody/tr/td")
+        for i in range(len(allData)):
+            allDataStringValue = allData[i].text
+            print("The all data is: " + allDataStringValue)
+
+if __name__ == "__main__":
+    LearnWebtables.main()
+```
