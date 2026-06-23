@@ -1,0 +1,17 @@
+```python
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+class LearnFrame:
+    @staticmethod
+    def main():
+        driver = webdriver.Chrome()
+        driver.get("https://leafground.com/frame.xhtml")
+        driver.maximize_window()
+        driver.implicitly_wait(15)
+        driver.switch_to.frame(0)
+        driver.find_element(By.ID, "Click").click()
+
+if __name__ == "__main__":
+    LearnFrame.main()
+```
