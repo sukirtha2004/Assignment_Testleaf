@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Bot</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, system-ui, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: #e2e8f0;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .card {
+      width: min(980px, 100%);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 24px 80px rgba(15, 23, 42, 0.35);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 4vw, 3rem);
+    }
+    p.lead {
+      margin: 0 0 24px;
+      color: #cbd5e1;
+    }
+    fieldset {
+      border: 0;
+      padding: 0;
+      margin: 0 0 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+    .field-group {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    input,
+    textarea,
+    select,
+    button {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 14px 16px;
+      font: inherit;
+      background: rgba(15, 23, 42, 0.95);
+      color: #e2e8f0;
+    }
+    input[type="range"] {
+      padding: 8px 0;
+      cursor: pointer;
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: linear-gradient(90deg, #2563eb, #7c3aed);
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      cursor: pointer;
+      border: 2px solid #2563eb;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      cursor: pointer;
+      border: 2px solid #2563eb;
+    }
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+    button {
+      cursor: pointer;
+      background: linear-gradient(90deg, #2563eb, #7c3aed);
+      border: 0;
+      color: white;
+      font-weight: 700;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+    .files-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .file-pill {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: rgba(148, 163, 184, 0.08);
+      border-radius: 999px;
+      color: #e2e8f0;
+    }
+    .file-pill button {
+      width: auto;
+      padding: 6px 10px;
+      background: transparent;
+      color: #f8fafc;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+    .status {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+    }
+    .status.hidden {
+      display: none;
+    }
+    .status h2 {
+      margin-top: 0;
+    }
+    .drop-zone {
+      position: relative;
+      border: 2px dashed rgba(148, 163, 184, 0.3);
+      border-radius: 18px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+      background: rgba(148, 163, 184, 0.04);
+    }
+    .drop-zone.drag-over {
+      background: rgba(59, 130, 246, 0.12);
+      border-color: #60a5fa;
+    }
+    .drop-zone span {
+      display: block;
+      color: #cbd5e1;
+      margin-bottom: 12px;
+    }
+    .drop-zone input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    #copyBtn {
+      width: auto;
+      max-width: 220px;
+    }
+    .markdown-output {
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      max-width: 100%;
+      max-height: 60vh;
+      overflow: auto;
+      margin: 0;
+      padding: 12px;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 14px;
+    }
+    .history-entry {
+      margin-bottom: 16px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(148, 163, 184, 0.08);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+    }
+    .history-entry h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+    .history-entry p {
+      margin: 8px 0;
+    }
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255, 255, 255, 0.18);
+      border-top-color: #e0f2fe;
+      border-radius: 999px;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-left: 10px;
+    }
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    .error {
+      color: #fecaca;
+      margin-top: 8px;
+    }
+    @media (max-width: 640px) {
+      .card {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>QA Bot</h1>
+    <p class="lead">Upload a document, ask a question, and get a contextual answer powered by an LLM.</p>
+
+    <fieldset>
+      <div class="field-group">
+        <label for="files">Upload files</label>
+        <div id="dropZone" class="drop-zone">
+          <span>Drag files here or click to select</span>
+          <input id="files" type="file" accept=".pdf,.docx,.csv,.txt" multiple />
+        </div>
+        <div id="filesList" class="files-list"></div>
+      </div>
+
+      <div class="field-group">
+        <label for="question">Question</label>
+        <textarea id="question" placeholder="Enter a question about the uploaded document(s)"></textarea>
+      </div>
+
+      <div class="field-group">
+        <label for="promptType">Prompt style</label>
+        <select id="promptType">
+          <option value="default">Default</option>
+          <option value="detailed">Detailed</option>
+          <option value="concise">Concise</option>
+          <option value="technical">Technical</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label for="provider">AI Provider</label>
+        <select id="provider">
+          <option value="">Default Provider</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label for="modelSelect">Model</label>
+        <select id="modelSelect">
+          <option value="">Default Model</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label for="temperature">Temperature: <span id="tempValue">0.1</span></label>
+        <input id="temperature" type="range" min="0" max="2" step="0.1" value="0.1" />
+        <small style="color: #cbd5e1; display: block; margin-top: 6px;">Lower = more deterministic, Higher = more creative</small>
+      </div>
+
+      <div class="field-group">
+        <button id="submitBtn" disabled>Submit</button>
+      </div>
+      <div id="errorMessage" class="error" aria-live="polite"></div>
+    </fieldset>
+
+    <section id="resultSection" class="status hidden" aria-live="polite">
+      <div class="result-header">
+        <h2>Answer</h2>
+        <button id="copyBtn" type="button" disabled>Copy answer</button>
+      </div>
+      <div id="resultText" class="markdown-output"></div>
+      <p id="resultMeta"></p>
+    </section>
+
+    <section id="historySection" class="status hidden" aria-live="polite">
+      <h2>Conversation history</h2>
+      <div id="historyList"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    const fileInput = document.getElementById("files");
+    const dropZone = document.getElementById("dropZone");
+    const filesList = document.getElementById("filesList");
+    const questionInput = document.getElementById("question");
+    const promptTypeInput = document.getElementById("promptType");
+    const temperatureInput = document.getElementById("temperature");
+    const tempValue = document.getElementById("tempValue");
+    const providerSelect = document.getElementById("provider");
+    const modelSelect = document.getElementById("modelSelect");
+    const submitBtn = document.getElementById("submitBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const errorMessage = document.getElementById("errorMessage");
+    const resultSection = document.getElementById("resultSection");
+    const resultText = document.getElementById("resultText");
+    const resultMeta = document.getElementById("resultMeta");
+    const historySection = document.getElementById("historySection");
+    const historyList = document.getElementById("historyList");
+
+    let selectedFiles = [];
+    let availableProviders = [];
+    let conversationHistory = [];
+
+    function renderFiles() {
+      filesList.innerHTML = "";
+      selectedFiles.forEach((file, index) => {
+        const pill = document.createElement("div");
+        pill.className = "file-pill";
+        pill.innerHTML = `<span>${file.name}</span><button type="button">Remove</button>`;
+        pill.querySelector("button").addEventListener("click", () => {
+          selectedFiles.splice(index, 1);
+          renderFiles();
+          updateSubmitState();
+        });
+        filesList.appendChild(pill);
+      });
+    }
+
+    function populateModels() {
+      const selectedProvider = providerSelect.value;
+      modelSelect.innerHTML = '<option value="">Default Model</option>';
+      if (selectedProvider && availableProviders.length > 0) {
+        const providerConfig = availableProviders.find(p => p.provider === selectedProvider);
+        if (providerConfig) {
+          providerConfig.models.forEach(model => {
+            const option = document.createElement("option");
+            option.value = model;
+            option.textContent = model;
+            modelSelect.appendChild(option);
+          });
+        }
+      }
+    }
+
+    async function loadAvailableProviders() {
+      try {
+        const response = await fetch("/config");
+        if (response.ok) {
+          const data = await response.json();
+          availableProviders = data.providers;
+          providerSelect.innerHTML = '<option value="">Default Provider</option>';
+          availableProviders.forEach(provider => {
+            const option = document.createElement("option");
+            option.value = provider.provider;
+            option.textContent = provider.provider.charAt(0).toUpperCase() + provider.provider.slice(1);
+            providerSelect.appendChild(option);
+          });
+        }
+      } catch (error) {
+        console.error("Failed to load provider config:", error);
+      }
+    }
+
+    function renderHistory() {
+      historyList.innerHTML = "";
+      if (conversationHistory.length === 0) {
+        historySection.classList.add("hidden");
+        return;
+      }
+      historySection.classList.remove("hidden");
+      conversationHistory.forEach((entry) => {
+        const item = document.createElement("div");
+        item.className = "history-entry";
+        const filesText = entry.filesProcessed && entry.filesProcessed.length > 0 
+          ? `Files: ${entry.filesProcessed.join(", ")}` 
+          : "";
+        item.innerHTML = `
+          <h3>${entry.time} · ${entry.promptType}</h3>
+          <p><strong>Question:</strong> ${entry.question}</p>
+          <p><strong>Answer:</strong></p>
+          <div>${marked.parse(entry.answer)}</div>
+          <p><em>Provider: ${entry.provider} · Model: ${entry.model} · Temperature: ${entry.temperature || 0.1}${filesText ? " · " + filesText : ""}</em></p>
+        `;
+        historyList.appendChild(item);
+      });
+    }
+
+    function updateSubmitState() {
+      submitBtn.disabled = selectedFiles.length === 0 || questionInput.value.trim() === "";
+      // Only disable copy button if no answer is currently visible
+      if (resultSection.classList.contains("hidden")) {
+        copyBtn.disabled = true;
+      }
+    }
+
+    function clearErrorMessage() {
+      errorMessage.textContent = "";
+      errorMessage.style.display = "none";
+    }
+
+    function showErrorMessage(message) {
+      errorMessage.textContent = message;
+      errorMessage.style.display = "block";
+    }
+
+    fileInput.addEventListener("change", (event) => {
+      const input = event.target;
+      selectedFiles = Array.from(input.files || []);
+      clearErrorMessage();
+      renderFiles();
+      updateSubmitState();
+    });
+
+    if (temperatureInput) {
+      temperatureInput.addEventListener("input", (event) => {
+        const value = event.target.value;
+        tempValue.textContent = value;
+      });
+    }
+
+    if (dropZone) {
+      dropZone.addEventListener("dragenter", (event) => {
+        event.preventDefault();
+        dropZone.classList.add("drag-over");
+      });
+      dropZone.addEventListener("dragover", (event) => {
+        event.preventDefault();
+      });
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("drag-over");
+      });
+      dropZone.addEventListener("drop", (event) => {
+        event.preventDefault();
+        dropZone.classList.remove("drag-over");
+        const files = Array.from(event.dataTransfer?.files || []);
+        if (files.length === 0) return;
+        selectedFiles = files;
+        const dataTransfer = new DataTransfer();
+        files.forEach((file) => dataTransfer.items.add(file));
+        fileInput.files = dataTransfer.files;
+        clearErrorMessage();
+        renderFiles();
+        updateSubmitState();
+      });
+    }
+
+    questionInput.addEventListener("input", updateSubmitState);
+    promptTypeInput.addEventListener("change", updateSubmitState);
+    providerSelect.addEventListener("change", () => {
+      populateModels();
+      updateSubmitState();
+    });
+    modelSelect.addEventListener("change", updateSubmitState);
+
+    async function handleSubmit() {
+      clearErrorMessage();
+      resultSection.classList.add("hidden");
+      
+      // Comprehensive validation
+      const errors = [];
+
+      if (!selectedFiles || selectedFiles.length === 0) {
+        errors.push("📁 Upload files: This field is required");
+      }
+
+      if (!questionInput.value.trim()) {
+        errors.push("❓ Question: This field is required");
+      }
+
+      if (errors.length > 0) {
+        showErrorMessage(errors.join("\n"));
+        return;
+      }
+
+      submitBtn.disabled = true;
+      const spinner = document.createElement("span");
+      spinner.className = "spinner";
+      submitBtn.appendChild(spinner);
+
+      try {
+        const MAX_FILE_SIZE = 10 * 1024 * 1024;
+        const validFiles = [];
+        
+        for (const file of selectedFiles) {
+          if (!["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/csv", "text/plain"].includes(file.type)) {
+            throw new Error(`Invalid file type: "${file.name}". Accepted types: PDF, DOCX, CSV, TXT`);
+          }
+          if (file.size > MAX_FILE_SIZE) {
+            throw new Error(`File "${file.name}" exceeds 10MB limit (${(file.size / 1024 / 1024).toFixed(2)}MB)`);
+          }
+          validFiles.push(file);
+        }
+
+        const formData = new FormData();
+        validFiles.forEach((file) => {
+          formData.append("files", file);
+        });
+        formData.append("question", questionInput.value.trim());
+        formData.append("promptType", promptTypeInput.value);
+        formData.append("temperature", String(parseFloat(temperatureInput.value)));
+        if (providerSelect.value) formData.append("provider", providerSelect.value);
+        if (modelSelect.value) formData.append("model", modelSelect.value);
+
+        console.log(`Uploading ${validFiles.length} file(s) with temperature ${temperatureInput.value}...`);
+        const response = await fetch("/search/upload", { 
+          method: "POST", 
+          body: formData 
+        });
+        
+        if (!response.ok) {
+          const payload = await response.json().catch(() => ({}));
+          const statusErrors = {
+            400: "Bad request: Invalid input provided",
+            413: "File too large: One or more files exceed the 10MB limit",
+            415: "Unsupported file type: Please upload PDF, DOCX, CSV, or TXT files",
+            422: "Failed to process file",
+            500: "Server error: Please try again later"
+          };
+          throw new Error(payload.error || statusErrors[response.status] || `Server error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        resultText.innerHTML = marked.parse(data.output);
+        resultMeta.textContent = `Provider: ${data.provider} · Model: ${data.model} · Prompt: ${data.promptType} · Temperature: ${data.temperature || temperatureInput.value} · Files: ${data.filesProcessed?.length || 0} · ${data.durationMs} ms`;
+        resultSection.classList.remove("hidden");
+        copyBtn.disabled = false;
+        conversationHistory.unshift({
+          question: questionInput.value.trim(),
+          answer: data.output,
+          provider: data.provider,
+          model: data.model,
+          promptType: promptTypeInput.value,
+          temperature: data.temperature || temperatureInput.value,
+          filesProcessed: data.filesProcessed || [],
+          time: new Date().toLocaleTimeString(),
+        });
+        renderHistory();
+      } catch (error) {
+        console.error("Upload error:", error);
+        const errorText = error instanceof Error ? error.message : "Failed to submit request";
+        showErrorMessage(`❌ Error: ${errorText}`);
+      } finally {
+        if (submitBtn.contains(spinner)) {
+          submitBtn.removeChild(spinner);
+        }
+        updateSubmitState();
+      }
+    }
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(resultText.textContent || "");
+        copyBtn.textContent = "Copied!";
+        setTimeout(() => {
+          copyBtn.textContent = "Copy answer";
+        }, 1200);
+      } catch (err) {
+        console.error("Clipboard copy failed", err);
+      }
+    });
+
+    submitBtn.addEventListener("click", handleSubmit);
+    
+    // Load available providers on page load
+    loadAvailableProviders();
+  </script>
+</body>
+</html>

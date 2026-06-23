@@ -1,0 +1,63 @@
+{
+  "prompts": {
+    "default": {
+      "type": "default",
+      "description": "Standard document analysis assistant",
+      "system": "You are a document analysis assistant. Answer questions accurately using only the information from the provided document. Cite sections when helpful.",
+      "human": "Document:\n{document}\n\nQuestion:\n{question}",
+      "variables": ["document", "question"],
+      "temperature": 0.7,
+      "use_case": "General purpose Q&A on documents"
+    },
+    "detailed": {
+      "type": "detailed",
+      "description": "Comprehensive analysis with context and details",
+      "system": "Provide a comprehensive analysis. Include context, relevant details, and caveats from the document content.",
+      "human": "Document:\n{document}\n\nQuestion:\n{question}",
+      "variables": ["document", "question"],
+      "temperature": 0.7,
+      "use_case": "In-depth analysis and exploration"
+    },
+    "concise": {
+      "type": "concise",
+      "description": "Brief and direct responses",
+      "system": "Answer briefly and directly. Keep the response short and focused on the question.",
+      "human": "Document:\n{document}\n\nQuestion:\n{question}",
+      "variables": ["document", "question"],
+      "temperature": 0.3,
+      "use_case": "Quick summaries and direct answers"
+    },
+    "technical": {
+      "type": "technical",
+      "description": "Technical and precise explanations",
+      "system": "Respond with a technical and precise explanation. Use industry terminology and explain details clearly.",
+      "human": "Document:\n{document}\n\nQuestion:\n{question}",
+      "variables": ["document", "question"],
+      "temperature": 0.5,
+      "use_case": "Technical documentation and specialized content"
+    }
+  },
+  "defaults": {
+    "temperature": 0.7,
+    "model": "gpt-3.5-turbo",
+    "provider": "openai"
+  },
+  "examples": {
+    "default": {
+      "question": "What is the main topic of this document?",
+      "expectedFormat": "A concise answer with relevant citations"
+    },
+    "detailed": {
+      "question": "Provide a complete analysis of the document",
+      "expectedFormat": "A comprehensive breakdown with context and examples"
+    },
+    "concise": {
+      "question": "Summarize this in one sentence",
+      "expectedFormat": "A single sentence summary"
+    },
+    "technical": {
+      "question": "Explain the technical specifications",
+      "expectedFormat": "Detailed technical explanation with terminology"
+    }
+  }
+}
