@@ -1,0 +1,273 @@
+﻿1. Types of RAG (Retrieval-Augmented Generation)
+RAG (Retrieval-Augmented Generation) is a technique where an LLM retrieves information from external sources (documents, databases, websites, vector databases) before generating an answer.
+Purpose:
+ To provide accurate, up-to-date, and domain-specific answers while reducing hallucinations.
+1. Naive RAG
+What it is
+The simplest form of RAG.
+How it works
+User Query
+   ↓
+Vector DB Search
+   ↓
+Relevant Documents
+   ↓
+LLM
+   ↓
+Answer
+Purpose
+Retrieve relevant documents and provide them directly to the LLM.
+Example
+Employee asks:
+"What is the leave policy?"
+The system retrieves the HR document and sends it to the LLM.
+
+
+
+
+
+
+2. Advanced RAG
+What it is
+An improved version of Naive RAG with better retrieval techniques.
+How it works
+Query
+↓
+Query Expansion
+↓
+Re-ranking
+↓
+Best Documents
+↓
+LLM
+Purpose
+Improve retrieval quality and reduce irrelevant results.
+Example
+A legal chatbot retrieves the most relevant legal clauses before answering.
+3. Hybrid RAG
+What it is
+Combines Vector Search and Keyword Search.
+How it works
+User Query
+  ↓
+Keyword Search + Vector Search
+  ↓
+Combined Results
+  ↓
+LLM
+Purpose
+Get the benefits of both semantic search and exact keyword matching.
+Example
+Searching:
+"Python authentication"
+Keyword search finds exact matches while vector search finds related concepts like JWT and OAuth.
+
+
+4. Graph RAG
+What it is
+Uses knowledge graphs instead of only vector embeddings.
+How it works
+Knowledge Graph
+     ↓
+Relationship Retrieval
+     ↓
+LLM
+Purpose
+Understand relationships between entities.
+Example
+Query:
+"Who reports to the CTO?"
+Graph RAG follows employee relationships to find the answer.
+5. Agentic RAG
+What it is
+Uses AI agents that can plan, retrieve, reason, and use tools before answering.
+How it works
+User Query
+    ↓
+Agent
+    ↓
+Search Multiple Sources
+    ↓
+Reason
+    ↓
+LLM Response
+Purpose
+Handle complex multi-step tasks.
+Example
+Query:
+"Compare AWS, Azure, and GCP pricing."
+The agent gathers data from multiple sources before generating a comparison.
+6. Corrective RAG (CRAG)
+What it is
+Checks whether retrieved information is relevant before sending it to the LLM.
+How it works
+Retrieve Documents
+     ↓
+Evaluate Quality
+     ↓
+Keep Best Results
+     ↓
+LLM
+Purpose
+Reduce incorrect retrievals.
+Example
+If retrieved documents are poor, the system performs additional searches.
+
+
+
+
+
+
+7. Self-RAG
+What it is
+The model evaluates its own retrieval process and decides whether more information is needed.
+How it works
+Question
+  ↓
+Retrieve
+  ↓
+Self-Evaluate
+  ↓
+Need More Data?
+  ↓
+Yes → Retrieve Again
+  ↓
+Answer
+Purpose
+Improve answer quality through self-reflection.
+Example
+If the model feels uncertain, it retrieves additional documents before answering.
+8. Multimodal RAG
+What it is
+Retrieves information from multiple data types such as text, images, audio, and PDFs.
+How it works
+Text + Images + PDFs
+       ↓
+Retriever
+       ↓
+LLM
+Purpose
+Answer questions using different kinds of content.
+Example
+Upload a medical scan and ask:
+"What does this report indicate?"
+The system retrieves both image and text information.
+
+
+
+
+3.Dynamic data:
+
+
+Industry
+	Why Data is Dynamic
+	Banking & Finance
+	Stock prices, exchange rates, transactions
+	Stock Market & Trading
+	Prices change every second
+	E-commerce
+	Product prices, inventory, offers
+	Travel & Airlines
+	Ticket prices, seat availability
+	Food Delivery
+	Restaurant availability, delivery times
+	Weather Forecasting
+	Continuous sensor updates
+	News & Media
+	New articles every minute
+	Social Media
+	New posts, comments, trends
+	Logistics & Supply Chain
+	Shipment tracking, routes
+	Sports
+	Live scores, player statistics
+	Ride Sharing
+	Driver location, surge pricing
+	Telecom
+	Network status, outages
+	Cybersecurity
+	New threats and vulnerabilities daily
+	
+
+
+
+
+
+Static Data:
+
+
+Domain
+	Examples of Static Data
+	Healthcare
+	Anatomy, medical terminology, disease classifications
+	Education
+	Mathematics, physics laws, programming fundamentals
+	Legal
+	Legal terminology, contract structures, legal drafting styles
+	Insurance
+	Policy wording, claim procedures, underwriting rules
+	Manufacturing
+	SOPs, machine operation procedures, quality standards
+	Human Resources
+	Employee policies, leave rules, onboarding processes
+	Accounting
+	Accounting principles, journal entry formats, reporting standards
+	Pharmaceuticals
+	Drug classifications, chemical properties, research papers
+	Engineering
+	Design principles, formulas, standards
+	Aerospace
+	Aircraft systems, engineering manuals
+	Automotive
+	Vehicle components, maintenance procedures
+	Telecommunications
+	Network architecture concepts, protocols
+	Government Administration
+	Rules, regulations, procedures
+	Banking (core concepts)
+	Loan concepts, banking terminology, KYC processes
+	Cybersecurity (fundamentals)
+	Security principles, cryptography concepts
+	Research & Academia
+	Scientific theories, published literature
+	Corporate Knowledge Bases
+	Internal SOPs, documentation, FAQs
+	Technical Support
+	Product manuals, troubleshooting guides
+	Compliance & Audit
+	Compliance frameworks and procedures
+	Training & Learning Platforms
+	Course content and learning materials
+	
+
+
+
+3.WCAG regulation  in different countries:
+
+
+Country/Region
+	Full Form
+	United States
+	Americans with Disabilities Act (Title II)
+	United States
+	Section 508 of the Rehabilitation Act of 1973
+	European Union
+	European Accessibility Act
+	European Union
+	European Standard 301 549 (Accessibility Requirements for ICT Products and Services)
+	United Kingdom
+	Public Sector Bodies (Websites and Mobile Applications) Accessibility Regulations
+	Canada
+	Accessibility for Ontarians with Disabilities Act
+	Australia
+	Disability Discrimination Act
+	India
+	Guidelines for Indian Government Websites and Applications
+	Japan
+	Japanese Industrial Standards X 8341-3 (Accessibility Guidelines for ICT Equipment, Software, and Services)
+	Germany
+	Barrierefreie-Informationstechnik-Verordnung (Accessible Information Technology Ordinance)
+	Germany
+	Barrierefreiheitsstärkungsgesetz (Accessibility Strengthening Act)
+	France
+	Référentiel Général d'Amélioration de l'Accessibilité (General Accessibility Improvement Framework)
