@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
+import { DetailsForm } from './components/DetailsForm'
 
 /* ─── DATA ─────────────────────────────────────────────────── */
 const socialLinks = [
@@ -357,6 +358,12 @@ export default function App() {
             />
             <ContactCard icon="📱" label="Mobile" value="+91 8508418507" />
           </div>
+        </section>
+
+        {/* ── DETAILS FORM ── */}
+        <section id="details" ref={setRef(7)} className="section form-section">
+          <SectionHead eyebrow="Details" title="Share Your Name, Age, and City" />
+          <DetailsForm />
         </section>
 
       </main>
